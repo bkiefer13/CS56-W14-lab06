@@ -17,6 +17,8 @@ public class AnimatedPictureViewer {
     
     private int dx = 5;
     private int dy = 5;
+    
+    Color c = Color.BLUE;
 
     public static void main (String[] args) {
       new AnimatedPictureViewer().go();
@@ -25,44 +27,61 @@ public class AnimatedPictureViewer {
     public void go() {
       JFrame frame = new JFrame();
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+      frame.pack();
       frame.getContentPane().add(panel);
       frame.setSize(640,480);
       frame.setVisible(true);
       
       frame.getContentPane().addMouseListener(new MouseAdapter() {
-        public void mouseEntered(MouseEvent e){
-        System.out.println("Mouse on. GO!!!");
-          anim = new Animation();
-          anim.start();
-        }
-
-        public void mouseExited(MouseEvent e){        
-          System.out.println("Mouse off. STOP ANIMATION!");
-          // Kill the animation thread
-          anim.interrupt();
-          while (anim.isAlive()){}
-          anim = null;         
-          panel.repaint();        
-        }
-      });
+	      public void mouseEntered(MouseEvent e){
+		  System.out.println("Mouse on. GO!!!");
+		  anim = new Animation();
+		  anim.start();
+	      }
+	      
+	      public void mouseExited(MouseEvent e){        
+		  System.out.println("Mouse off. STOP ANIMATION!");
+		  // Kill the animation thread
+		  anim.interrupt();
+		  //while (anim.isAlive()){}
+		  anim = null;         
+		  panel.repaint();        
+	      }
+	      
+	      public void mouseClicked(MouseEvent e){
+		  System.out.println("Mouse clicked. Changing colors.");
+		  if(c==Color.BLUE){
+		      c=Color.GREEN;
+		      panel.repaint();
+		      return;
+		  }
+		  if(c==Color.GREEN){
+		      c=Color.RED;
+		      panel.repaint();
+		      return;
+		  }
+		  else
+		      c=Color.BLUE;
+		  panel.repaint();
+	      }
+	  });
       
     } // go()
 
     class DrawPanel extends JPanel {
-       public void paintComponent(Graphics g) {
-
-        Graphics2D g2 = (Graphics2D) g;
-
-         // Clear the panel first
-          g2.setColor(Color.white);
-          g2.fillRect(0,0,this.getWidth(), this.getHeight());
-
-          // Draw the AngryRobot
-          g2.setColor(Color.BLUE);
-          AngryRobot test = new AngryRobot(x, y, 100, 150);
-          g2.draw(test);
-       }
+	public void paintComponent(Graphics g) {
+	    
+	    Graphics2D g2 = (Graphics2D) g;
+	    
+	    // Clear the panel first
+	    g2.setColor(Color.white);
+	    g2.fillRect(0,0,this.getWidth(), this.getHeight());
+	    
+	    // Draw the AngryRobot
+	    g2.setColor(c);
+	    AngryRobot test = new AngryRobot(x, y, 100, 150);
+	    g2.draw(test);
+	}
     }
     
 
