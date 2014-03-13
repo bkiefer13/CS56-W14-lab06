@@ -16,6 +16,7 @@ public class AnimatedPictureViewer {
     private int y = 100;
     
     private int dx = 5;
+    private int dy = 5;
 
     public static void main (String[] args) {
       new AnimatedPictureViewer().go();
@@ -31,13 +32,13 @@ public class AnimatedPictureViewer {
       
       frame.getContentPane().addMouseListener(new MouseAdapter() {
         public void mouseEntered(MouseEvent e){
-        System.out.println("mouse entered");
+        System.out.println("Mouse on. GO!!!");
           anim = new Animation();
           anim.start();
         }
 
         public void mouseExited(MouseEvent e){        
-          System.out.println("Mouse exited");
+          System.out.println("Mouse off. STOP ANIMATION!");
           // Kill the animation thread
           anim.interrupt();
           while (anim.isAlive()){}
@@ -72,10 +73,21 @@ public class AnimatedPictureViewer {
           while (true) {
             // Bounce off the walls
 
-            if (x >= 400) { dx = -5; }
-            if (x <= 50) { dx = 5; }
+	      if (x >= 640-100-50){
+		  dx = -5;
+	      }
+	      if (x <= 50){ 
+		  dx = 5; 
+	      }
+	      if (y >= 480-150-50){
+		  dy = -5;
+	      }
+	      if (y <= 50){
+		  dy = 5;
+	      }
             
-            x += dx;                
+            x += dx;
+	    y += dy;
             panel.repaint();
             Thread.sleep(50);
           }
