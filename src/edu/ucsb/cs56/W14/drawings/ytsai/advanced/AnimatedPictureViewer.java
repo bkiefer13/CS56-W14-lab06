@@ -98,7 +98,7 @@ public class AnimatedPictureViewer {
 	      if (x <= 50){ 
 		  dx = 5; 
 	      }
-	      if (y >= 480-150-50){
+	      if (y >= 480-150-50-69){
 		  dy = -5;
 	      }
 	      if (y <= 50){
