@@ -14,9 +14,13 @@ public class AnimatedPictureViewer {
 
     private int x = 100;
     private int y = 100;
+    private int z = 40;
 
     private int dx = 5;
     private int dy = 5;
+    private int dz = 2;
+
+    private Color color = Color.YELLOW;
 
     public static void main (String[] args) {
 	new AnimatedPictureViewer().go();
@@ -51,16 +55,21 @@ public class AnimatedPictureViewer {
     class DrawPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 
+	   
 	    Graphics2D g2 = (Graphics2D) g;
-	    // Clear the panel first                                                                                                                                                                                                                                                                                            
+
+	    // Clear the panel first                                                                                                                        
 	    g2.setColor(Color.white);
 	    g2.fillRect(0,0,this.getWidth(), this.getHeight());
-
-	    // Draw the Balloon                                                                                                                                                                                                                                                                                                   
-	    g2.setColor(Color.RED);
-	    BalloonWithString test = new BalloonWithString(x, y, 40);
+	    // Draw the Balloon                                                                                                                                       	
+       	    Stroke thick = new BasicStroke (4.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+	    Stroke orig=g2.getStroke();
+	    g2.setStroke(thick);
+	    g2.setColor(color);
+	    BalloonWithString test = new BalloonWithString(x, y, z);
 	    g2.draw(test);
-	}
+		    
+      	}
     }
 
     class Animation extends Thread {
@@ -68,19 +77,31 @@ public class AnimatedPictureViewer {
 	    try {
 		while (true) {
 		    // Bounce off the walls                                                                                                                                                                                                                                                                               
-		    if (x >= 400) 
-			{
+		    if (x >= 350){
 			    dx = -5;
-			    dy=-5;
-			}
-		    if (x <= 50) 
-			{ 
+			    dz=-2;
+			    color=Color.RED;
+		    }
+
+		    if (x <= 50) {
 			    dx = 5;
-			    dy=5;
-			}
+			    dz=1;
+			    color = Color.YELLOW;
+		    }
+
+		    if(y>= 350){
+			dy=-5;
+			color = Color.PINK;
+		    }
+
+		    if(y<= 150){
+			dy=5;
+			color=Color.RED;
+		    }
 
 		    x += dx;
-		    y+=dy;
+		    y += dy;
+		    z += dz;
 		    panel.repaint();
 		    Thread.sleep(50);
 		}
